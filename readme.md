@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://avatars.githubusercontent.com/u/322580534?s=200&v=4" width="128" alt="FPZone logo">
+<img src="https://i.ibb.co/d4nFdfwY/Chat-GPT-Image-29-2026-22-03-23.png" width="128" alt="FPZone logo">
 
 # FPZone
 
