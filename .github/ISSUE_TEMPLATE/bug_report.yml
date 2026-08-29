@@ -1,0 +1,109 @@
+name: 🐛 Сообщить об ошибке
+description: Сообщите о проблеме в FPZone, чтобы мы смогли её воспроизвести и исправить.
+title: "[Ошибка]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо за сообщение! Заполните форму максимально подробно.
+
+        Перед отправкой удалите из логов пароли, токены, ключи, cookie, идентификаторы сессий и персональные данные.
+
+  - type: dropdown
+    id: product
+    attributes:
+      label: Где возникла ошибка?
+      options:
+        - FPZone Launcher
+        - Сайт FPZone
+        - Установка или обновление игры
+        - Запуск игры
+        - Достижения
+        - Workshop / модификации
+        - Сетевая игра
+        - Другое
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Версия FPZone
+      description: Укажите версию лаунчера или номер сборки, если он известен.
+      placeholder: Например, 0.7.1
+    validations:
+      required: true
+
+  - type: input
+    id: game
+    attributes:
+      label: Игра
+      description: Если ошибка связана с конкретной игрой, укажите её название.
+      placeholder: Название игры
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Система
+      description: Укажите версию Windows и важные особенности системы.
+      placeholder: |
+        Windows: Windows 11 24H2
+        Архитектура: x64
+        Дополнительно:
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Описание ошибки
+      description: Что произошло? Укажите точный текст сообщения об ошибке, если он есть.
+      placeholder: Подробно опишите проблему...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Как воспроизвести?
+      placeholder: |
+        1. Открыть FPZone...
+        2. Выбрать...
+        3. Нажать...
+        4. Появляется ошибка...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемое поведение
+      description: Что должно было произойти вместо ошибки?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Логи
+      description: Вставьте только относящийся к проблеме фрагмент без секретов и персональных данных.
+      render: text
+
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Скриншоты или видео
+      description: Перетащите сюда изображения, видео или другие материалы, которые помогут понять проблему.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Перед отправкой
+      options:
+        - label: Я проверил существующие Issues и не нашёл такую же ошибку.
+          required: true
+        - label: Я использую актуальную доступную версию FPZone.
+          required: true
+        - label: В сообщении нет паролей, токенов, ключей и персональных данных.
+          required: true
+
