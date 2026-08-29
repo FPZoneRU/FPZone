@@ -5,9 +5,35 @@ body:
   - type: markdown
     attributes:
       value: |
-        Спасибо за сообщение! Заполните форму максимально подробно.
+        Выберите раздел и срочность — после публикации GitHub автоматически назначит лейблы `тип: баг`, выбранный раздел, приоритет и статус `предложено`.
 
         Перед отправкой удалите из логов пароли, токены, ключи, cookie, идентификаторы сессий и персональные данные.
+
+  - type: dropdown
+    id: sections
+    attributes:
+      label: Разделы
+      description: К каким частям FPZone относится ошибка?
+      multiple: true
+      options:
+        - CMS
+        - LAUNCHER
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Срочность
+      description: Оцените влияние ошибки. Итоговый приоритет может быть изменён командой.
+      options:
+        - Обычная
+        - Важная
+        - Срочная
+        - Критическая
+      default: 0
+    validations:
+      required: true
 
   - type: dropdown
     id: product
@@ -58,7 +84,6 @@ body:
     attributes:
       label: Описание ошибки
       description: Что произошло? Укажите точный текст сообщения об ошибке, если он есть.
-      placeholder: Подробно опишите проблему...
     validations:
       required: true
 
@@ -93,7 +118,7 @@ body:
     id: attachments
     attributes:
       label: Скриншоты или видео
-      description: Перетащите сюда изображения, видео или другие материалы, которые помогут понять проблему.
+      description: Перетащите сюда материалы, которые помогут понять проблему.
 
   - type: checkboxes
     id: confirmation
@@ -102,8 +127,6 @@ body:
       options:
         - label: Я проверил существующие Issues и не нашёл такую же ошибку.
           required: true
-        - label: Я использую актуальную доступную версию FPZone.
-          required: true
-        - label: В сообщении нет паролей, токенов, ключей и персональных данных.
+        - label: В сообщении нет секретов, персональных данных и закрытых файлов.
           required: true
 

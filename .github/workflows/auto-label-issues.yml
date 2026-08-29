@@ -48,6 +48,10 @@ jobs:
             const priority = field('Срочность');
             const selected = ['статус: предложено'];
 
+            if (body.includes('### Где возникла ошибка?')) {
+              selected.push('тип: баг');
+            }
+
             const mappings = [
               [sections, 'CMS', 'раздел: CMS'],
               [sections, 'LAUNCHER', 'раздел: launcher'],
@@ -120,4 +124,3 @@ jobs:
             });
 
             core.info(`Назначены лейблы: ${labels.join(', ')}`);
-
