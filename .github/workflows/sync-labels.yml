@@ -1,0 +1,106 @@
+name: Синхронизация лейблов
+
+on:
+  workflow_dispatch:
+    inputs:
+      delete_unlisted:
+        description: Удалить все лейблы, которых нет в labels.json
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync:
+    name: Обновить лейблы
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Получить файлы репозитория
+        uses: actions/checkout@v6
+
+      - name: Создать и обновить лейблы
+        uses: actions/github-script@v9
+        env:
+          DELETE_UNLISTED: ${{ inputs.delete_unlisted }}
+        with:
+          script: |
+            const fs = require('fs');
+
+            const desired = JSON.parse(
+              fs.readFileSync('.github/labels.json', 'utf8')
+            );
+
+            const existing = await github.paginate(
+              github.rest.issues.listLabelsForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100
+              }
+            );
+
+            const existingByName = new Map(
+              existing.map(label => [label.name.toLowerCase(), label])
+            );
+            const desiredNames = new Set(
+              desired.map(label => label.name.toLowerCase())
+            );
+
+            let created = 0;
+            let updated = 0;
+            let deleted = 0;
+
+            for (const label of desired) {
+              const current = existingByName.get(label.name.toLowerCase());
+
+              if (current) {
+                await github.rest.issues.updateLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: current.name,
+                  new_name: label.name,
+                  color: label.color,
+                  description: label.description
+                });
+                updated++;
+              } else {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description
+                });
+                created++;
+              }
+            }
+
+            if (process.env.DELETE_UNLISTED === 'true') {
+              for (const label of existing) {
+                if (!desiredNames.has(label.name.toLowerCase())) {
+                  await github.rest.issues.deleteLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: label.name
+                  });
+                  deleted++;
+                }
+              }
+            }
+
+            core.summary
+              .addHeading('Синхронизация лейблов')
+              .addTable([
+                [{ data: 'Действие', header: true }, { data: 'Количество', header: true }],
+                ['Создано', String(created)],
+                ['Обновлено', String(updated)],
+                ['Удалено', String(deleted)]
+              ]);
+
+            await core.summary.write();
+            core.info(`Создано: ${created}; обновлено: ${updated}; удалено: ${deleted}`);
+
