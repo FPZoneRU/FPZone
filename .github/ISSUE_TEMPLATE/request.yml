@@ -1,0 +1,118 @@
+name: 📋 Создать заявку
+description: Сообщите об ошибке, предложите улучшение или оставьте другое обращение по FPZone.
+title: "[Заявка]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Выберите раздел, тип заявки и срочность — после публикации GitHub автоматически назначит соответствующие лейблы.
+
+        Не публикуйте пароли, токены, ключи, cookie, персональные данные и сведения о нераскрытых уязвимостях.
+
+  - type: dropdown
+    id: sections
+    attributes:
+      label: Разделы
+      description: К каким частям FPZone относится заявка?
+      multiple: true
+      options:
+        - CMS
+        - LAUNCHER
+    validations:
+      required: true
+
+  - type: dropdown
+    id: request_types
+    attributes:
+      label: Тип заявки
+      multiple: true
+      options:
+        - БАГ
+        - ПРЕДЛОЖЕНИЕ
+        - УЛУЧШЕНИЕ
+        - UI / UX
+        - КОНТЕНТ
+        - БЕЗОПАСНОСТЬ
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Срочность
+      description: Оцените влияние заявки. Итоговый приоритет может быть изменён командой.
+      options:
+        - Обычная
+        - Важная
+        - Срочная
+        - Критическая
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Версия FPZone
+      description: Укажите версию лаунчера или номер сборки, если он известен.
+      placeholder: Например, 0.7.1
+
+  - type: input
+    id: game
+    attributes:
+      label: Игра
+      description: Если заявка связана с конкретной игрой, укажите её название.
+      placeholder: Название игры
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Описание
+      description: Подробно опишите проблему, предложение или ожидаемый результат.
+      placeholder: Что произошло или что вы предлагаете изменить?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Шаги воспроизведения
+      description: Для ошибки перечислите точные действия. Для предложения поле можно оставить пустым.
+      placeholder: |
+        1. Открыть FPZone...
+        2. Выбрать...
+        3. Нажать...
+        4. Появляется ошибка...
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Система и окружение
+      placeholder: |
+        Windows: Windows 11 24H2
+        Архитектура: x64
+        Дополнительно:
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Логи
+      description: Вставьте только относящийся к заявке фрагмент без секретов и персональных данных.
+      render: text
+
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Скриншоты или видео
+      description: Перетащите сюда материалы, которые помогут понять заявку.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Перед отправкой
+      options:
+        - label: Я проверил существующие Issues и не нашёл такую же заявку.
+          required: true
+        - label: В сообщении нет секретов, персональных данных и закрытых файлов.
+          required: true
+
